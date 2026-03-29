@@ -1,25 +1,25 @@
-import { View, StyleSheet, Text } from "react-native";
+import { TouchableOpacity, Text, StyleSheet } from "react-native";
 
-export default function Cell({ play }) {
+export default function Cell({ value, onPress }) {
   return (
-    <View style={styles.cell}>
-      <Text style={styles.text}>{play}</Text>
-    </View>
+    <TouchableOpacity style={styles.cell} onPress={onPress}>
+      <Text style={styles.text}>{value}</Text>
+    </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   cell: {
-    width: 80,
-    height: 80,
-    backgroundColor: "#090",
+    width: "33.3333%",
+    aspectRatio: 1,
+    backgroundColor: "green",
     borderWidth: 1,
     borderColor: "black",
     justifyContent: "center",
     alignItems: "center",
   },
   text: {
-    fontSize: 30,
+    fontSize: 28,
     fontWeight: "bold",
     color: "white",
   },

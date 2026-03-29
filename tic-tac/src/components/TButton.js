@@ -1,32 +1,32 @@
-import { View, StyleSheet, Text, Pressable } from "react-native";
-import colors from "../constants/colors";
-export default function TButton({ label, fun = () => {} }) {
+import { TouchableOpacity, Text, StyleSheet } from "react-native";
+
+export default function TButton({ label, fun, disabled = false }) {
   return (
-    <Pressable
-      style={({ pressed }) =>
-        pressed ? [styles.container, { opacity: 0.5 }] : styles.container
-      }
+    <TouchableOpacity
+      style={[styles.button, disabled && styles.disabledButton]}
       onPress={fun}
+      disabled={disabled}
     >
       <Text style={styles.text}>{label}</Text>
-    </Pressable>
+    </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    width: 90,
-    height: 40,
-    backgroundColor: colors.button,
+  button: {
+    backgroundColor: "#11b5b5",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
     borderWidth: 1,
     borderColor: "black",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 10,
+  },
+  disabledButton: {
+    backgroundColor: "gray",
   },
   text: {
-    fontSize: 15,
-    fontWeight: "bold",
     color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });

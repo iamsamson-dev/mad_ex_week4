@@ -54,10 +54,18 @@
  * Write your code below:
  */
 
-function processData(data, callback) {
-  // Your implementation here
-}
 
+function processData(data, callback) {
+  if (data.includes("error")) {
+    setTimeout(() => {
+      callback(new Error("process data error"));
+    }, 200);
+  } else {
+    setTimeout(() => {
+      callback(null, data.toUpperCase());
+    }, 200);
+  }
+}
 /**
  * Exercise 2: Student File Creation with Validation in Node.js
  *
@@ -115,10 +123,31 @@ const fs = require("fs");
  * @param {Object} studentInfo - An object containing the student's first name, surname, age, and hobbies.
  * @param {Function} callback - A callback function that handles the result of the file operation.
  */
-function createStudentFile(studentName, studentInfo, callback) {
-  // Your implementation here
-}
 
+function createStudentFile(studentName, studentInfo, callback) {
+  const filename =
+    studentName
+      .split(" ")
+      .map((part, index) =>
+        index === 0
+          ? part.toLowerCase()
+          : part.charAt(0).toUpperCase() + part.slice(1).toLowerCase()
+      )
+      .join("") + ".txt";
+
+  if (fs.existsSync(filename)) {
+    return callback(new Error("File exists"));
+  }
+
+  const fullName = `${studentInfo.firstName} ${studentInfo.surName}`;
+  if (studentName !== fullName) {
+    return callback(new Error("Wrong Information"));
+  }
+
+  const content = `Name: ${studentName}\nAge: ${studentInfo.age}\nHobby: ${studentInfo.hobby.join(", ")}`;
+
+  fs.writeFile(filename, content, callback);
+}
 /**
  * Exercise 3: Using Promises in Asynchronous JavaScript
  *
@@ -153,10 +182,19 @@ function createStudentFile(studentName, studentInfo, callback) {
  * Write your code below:
  */
 
-function loadUserData(userId) {
-  // Your implementation here
-}
 
+function loadUserData(userId) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (userId < 1) {
+        reject(new Error("Invalid user ID"));
+        return;
+      }
+
+      resolve({ id: userId, name: "John Doe" });
+    }, 100);
+  });
+}
 /**
  * Exercise 4: Fetching Data with Async/Await
  *
@@ -197,10 +235,19 @@ function loadUserData(userId) {
  * Write your code below:
  */
 
-async function fetchUserDetails(userId) {
-  // Your implementation here
-}
 
+async function fetchUserDetails(userId) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (userId < 1) {
+        reject(new Error("Invalid user ID"));
+        return;
+      }
+
+      resolve({ id: userId, name: "Jane Doe" });
+    }, 100);
+  });
+}
 /**
  * Exercise 5: Check Tic-Tac-Toe Game State
  *
@@ -236,8 +283,37 @@ async function fetchUserDetails(userId) {
  * Write your code below:
  */
 
+
 function checkState(board) {
-  // Your implementation here
+  const winCond = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+
+  const xWin = winCond.some((cond) => cond.every((p) => board[p] === "X"));
+  if (xWin) return "X wins";
+
+  const oWin = winCond.some((cond) => cond.every((p) => board[p] === "O"));
+  if (oWin) return "O wins";
+
+  const [xMoves, oMoves] = board.reduce(
+    (acc, cell) => {
+      if (cell === "X") return [acc[0] + 1, acc[1]];
+      if (cell === "O") return [acc[0], acc[1] + 1];
+      return acc;
+    },
+    [0, 0]
+  );
+
+  if (xMoves + oMoves === 9) return "It is a tie";
+  if (xMoves > oMoves) return "O to play";
+  return "X to play";
 }
 
 module.exports = {

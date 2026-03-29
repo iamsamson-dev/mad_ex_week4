@@ -1,5 +1,6 @@
 import { View, StyleSheet, Text } from "react-native";
 import colors from "../constants/colors";
+
 export default function Title({ title }) {
   return (
     <View style={styles.container}>
